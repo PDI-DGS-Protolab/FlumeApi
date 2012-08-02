@@ -1,7 +1,14 @@
+# Binary Files #
+bin/
 *.class
+
+# Config Files #
 .classpath
 .project
-bin/
+
 # Package Files #
 *.war
 *.ear
+
+# Also, we omit the Git ignore file #
+.gitignore
