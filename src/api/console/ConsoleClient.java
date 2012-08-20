@@ -10,6 +10,11 @@ import org.apache.flume.EventDeliveryException;
 import api.Client;
 import api.rpc.exceptions.MaxBatchSizeException;
 
+/**
+ *	This class implements a Client that shows by console all the logs received
+ * @author OIL-Conwet
+ */
+
 public class ConsoleClient implements Client{
 
 	@Override

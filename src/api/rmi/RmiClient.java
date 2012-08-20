@@ -4,6 +4,12 @@ import java.util.List;
 
 import api.Client;
 
+
+/**
+ * This class implements a Client that sends its logs via an Rmi connection
+ * @author OIL-Conwet
+ *
+ */
 public class RmiClient implements Client {
 
 	public RmiClient(String host, int port){

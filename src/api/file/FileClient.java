@@ -13,14 +13,17 @@ import org.apache.flume.EventDeliveryException;
 import api.Client;
 import api.rpc.exceptions.MaxBatchSizeException;
 
+/**
+ *	This class implements a Client that writes to a File all the logs received
+ * @author OIL-Conwet
+ */
+
 public class FileClient implements Client{
 
-	private String path;
 	private FileOutputStream fos;
 	
 	public FileClient(String path){
 		try {
-			this.path=path;
 			fos=new FileOutputStream(path);
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
