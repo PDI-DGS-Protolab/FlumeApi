@@ -4,6 +4,7 @@ bin/
 
 # Config Files #
 .project
+flume.log
 
 # Package Files #
 *.war

@@ -1,5 +1,0 @@
-2012-08-20 10:50:01,210 WARN api.NettyAvroRpcClient: Invalid value for batchSize: 0; Using default value.
-2012-08-20 10:55:33,747 WARN api.NettyAvroRpcClient: Invalid value for batchSize: 0; Using default value.
-2012-08-20 10:56:19,120 WARN api.NettyAvroRpcClient: Invalid value for batchSize: 0; Using default value.
-2012-08-20 10:57:32,138 WARN api.NettyAvroRpcClient: Invalid value for batchSize: 0; Using default value.
-2012-08-20 10:58:09,456 WARN api.NettyAvroRpcClient: Invalid value for batchSize: 0; Using default value.
