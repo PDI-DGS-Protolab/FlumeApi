@@ -1,13 +1,14 @@
 package api.rpc;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Properties;
+import java.util.Queue;
 
 import org.apache.flume.api.*;
 import org.apache.flume.*;
 import org.apache.flume.event.*;
+import org.apache.flume.lifecycle.LifecycleState;
 import org.apache.flume.Event;
-
-import api.Client;
+import api.ReliableClient;
 import api.rpc.exceptions.MaxBatchSizeException;
 
 
@@ -16,9 +17,10 @@ import api.rpc.exceptions.MaxBatchSizeException;
  * @author OIL-Conwet
  *
  */
-public class ClientRpc implements Client{
+public class ClientRpc implements ReliableClient{
 
 	private RpcClient c;
+	private List<Event> q;
 	
 	public ClientRpc(){
 		c= RpcClientFactory.getDefaultInstance("127.0.0.1",55555);
@@ -26,20 +28,9 @@ public class ClientRpc implements Client{
 	
 	public ClientRpc(String host, int port){
 		c=RpcClientFactory.getDefaultInstance(host, port);
+		q=new LinkedList<Event>();
 	}
 	
-	public ClientRpc(String host,int port, String priority){
-		// Setup properties for the failover
-		Properties props = new Properties();
-		props.put("client.type", "default_failover");
-		// list of hosts
-		props.put("hosts", "host1 host2 host3");
-		// address/port pair for each host
-		props.put("hosts.host1", "localhost" + ":" + 55554);
-
-		// create the client with failover properties
-		c = (FailoverRpcClient) RpcClientFactory.getInstance(props);
-	}
 	@Override
 	public void write(String s)throws EventDeliveryException {
 		Event e= EventBuilder.withBody(s.getBytes());
@@ -63,5 +54,87 @@ public class ClientRpc implements Client{
 		if (!c.isActive()) {
 			c.close();
 		}
+	}
+
+	@Override
+	public boolean configure(String... params) {
+		if(params==null || params.length!=2){
+			return false;	
+		}else{
+			c=RpcClientFactory.getDefaultInstance(params[0], Integer.valueOf(params[1]));
+			return true;
+		}
+		
+	}
+
+	@Override
+	public void ReliableWrite(String event) {
+		boolean sent=false;
+		try {
+			c.append(EventBuilder.withBody(event.getBytes()));
+			sent=true;
+			if(q.size()>0 && q.size()<=c.getBatchSize()){
+				c.appendBatch(q);
+				q.clear();
+			}else if (q.size()>0){
+				for(Event e:q){
+					c.append(e);
+					q.remove(e);
+				}
+			}
+			
+		} catch (EventDeliveryException e) {
+			if(!sent){
+				q.add(EventBuilder.withBody(event.getBytes()));
+			}
+		}
+	}
+
+	@Override
+	public Channel getChannel() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Status process() throws EventDeliveryException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setChannel(Channel arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public LifecycleState getLifecycleState() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void start() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void stop() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public String getName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setName(String arg0) {
+		// TODO Auto-generated method stub
+		
 	}
 }

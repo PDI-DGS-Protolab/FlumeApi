@@ -8,7 +8,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.flume.Channel;
 import org.apache.flume.EventDeliveryException;
+import org.apache.flume.lifecycle.LifecycleState;
 
 import api.Client;
 import api.rpc.exceptions.MaxBatchSizeException;
@@ -58,6 +60,68 @@ public class FileClient implements Client{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}		
+	}
+
+	@Override
+	public boolean configure(String... params) {
+		if (params==null || params.length!=1){
+			return false;
+		}else{
+			try {
+				fos=new FileOutputStream(params[0]);
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			}
+			return true;
+		}
+	}
+
+	@Override
+	public Channel getChannel() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Status process() throws EventDeliveryException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setChannel(Channel arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public LifecycleState getLifecycleState() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void start() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void stop() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public String getName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setName(String arg0) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

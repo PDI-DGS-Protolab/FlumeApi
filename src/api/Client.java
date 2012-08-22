@@ -2,15 +2,16 @@ package api;
 
 import java.util.List;
 import org.apache.flume.EventDeliveryException;
-import api.rpc.exceptions.MaxBatchSizeException;
+import org.apache.flume.Sink;
 
+import api.rpc.exceptions.MaxBatchSizeException;
 /**
  * 
  * @author OIL-Conwet
  * This interface is the blueprint for all the clients.
  */
 
-public interface Client {
+public interface Client extends Sink{
 	
 	/**
 	 * This method sends one log (with the String contained in 'log') using this Client.
@@ -25,10 +26,12 @@ public interface Client {
 	 * @throws MaxBatchSizeException This exception is thrown when you are trying to send a List of logs that's too long.
 	 * @throws EventDeliveryException This Exception is thrown when there is an issue delivering the log.
 	 */
-	void writeList(List<String> logs) throws MaxBatchSizeException, EventDeliveryException ;
+	void writeList(List<String> logs) throws MaxBatchSizeException, EventDeliveryException;
 	
 	/**
 	 * This method closes the connection between this Client and the associated target.
 	 */
 	void close();
+	
+	boolean configure(String... params);
 }

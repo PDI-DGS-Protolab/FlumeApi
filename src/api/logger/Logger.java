@@ -4,13 +4,10 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.flume.EventDeliveryException;
-
 import api.Client;
 import api.console.ConsoleClient;
-import api.rmi.RmiClient;
 import api.rpc.ClientRpc;
 import api.file.FileClient;
-
 /**
  *	This class implements a Logger, it is, a group of Clients. 
  * @author OIL-Conwet
@@ -71,26 +68,14 @@ public class Logger {
 		clients.add(cl);
 		return clients.indexOf(cl);
 	}
-	
-	/**
-	 * This method appends a RmiClient to the list of clients. 
-	 * @param host The host of the server.
-	 * @param port The port in which the server is listening.
-	 * @return The index of the client in the list.
-	 */
-	public int addRmiDestiny(String host, int port){
-		Client cl=new RmiClient(host,port);
-		clients.add(cl);
-		return clients.indexOf(cl);
-	}
-	
 	/**
 	 * This method sends one log to all the clients registered.
 	 * @param log The log to send.
 	 * @throws EventDeliveryException This Exception is thrown when there is an issue delivering the log. 
 	 */
 	public void sendAll(String log) throws EventDeliveryException{
-		for(Client c:clients) c.write(log);
+		for(Client c:clients)
+				c.write(log);
 }
 	/**
 	 * This method sends a batch of logs to all the clients registered.
@@ -109,7 +94,7 @@ public class Logger {
 	 */
 	public void send (int index,String log) throws EventDeliveryException{
 		Client cl=clients.get(index);
-		cl.write(log);
+			cl.write(log);
 	}
 	
 	/**
@@ -122,5 +107,45 @@ public class Logger {
 		for (String s:l) send(index, s);
 	}
 	
+	public void removeDestiny(int index){
+		clients.remove(index).close();
+	}
+	
+	public void removeDestiny(api.ClientType ct){
+		switch(ct){
+		case CONSOLE:
+			for(Client c:clients){
+				if(c instanceof ConsoleClient){
+					clients.remove(c);
+					c.close();
+				}
+			}			
+			break;
+			
+		case FILE:
+			for(Client c:clients){
+				if(c instanceof FileClient){
+					clients.remove(c);
+					c.close();
+				}
+			}					
+			break;
+			
+		case DATABASE:
+			break;
+			
+		case RPC:
+			for(Client c:clients){
+				if(c instanceof ClientRpc){
+					clients.remove(c);
+					c.close();
+				}
+			}					
+			break;
+			
+		default:
+			break;
+		}		
+	}	
 }
  
