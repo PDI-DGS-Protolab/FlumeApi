@@ -2,7 +2,6 @@ package api.logger;
 
 import java.util.LinkedList;
 import java.util.List;
-
 import org.apache.flume.EventDeliveryException;
 import api.Client;
 import api.console.ConsoleClient;
@@ -73,17 +72,23 @@ public class Logger {
 	 * @param log The log to send.
 	 * @throws EventDeliveryException This Exception is thrown when there is an issue delivering the log. 
 	 */
-	public void sendAll(String log) throws EventDeliveryException{
+	public void sendAll(String log){
 		for(Client c:clients)
+			try {
 				c.write(log);
+			} catch (EventDeliveryException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 }
 	/**
 	 * This method sends a batch of logs to all the clients registered.
 	 * @param l the list of logs to send
 	 * @throws EventDeliveryException This Exception is thrown when there is an issue delivering the log.
 	 */
-	public void sendBatchAll(List<String> l) throws EventDeliveryException{
+	public void sendBatchAll(List<String> l){
 		for(String s:l) sendAll(s);
+
 	}
 	
 	/**
@@ -92,9 +97,14 @@ public class Logger {
 	 * @param log The log to send.
 	 * @throws EventDeliveryException This Exception is thrown when there is an issue delivering the log.
 	 */
-	public void send (int index,String log) throws EventDeliveryException{
+	public void send (int index,String log) {
 		Client cl=clients.get(index);
-			cl.write(log);
+			try {
+				cl.write(log);
+			} catch (EventDeliveryException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 	}
 	
 	/**
@@ -103,7 +113,7 @@ public class Logger {
 	 * @param lThe list of logs to send.
 	 * @throws EventDeliveryException This Exception is thrown when there is an issue delivering the log.
 	 */
-	public void sendBatch (int index, List<String> l) throws EventDeliveryException{
+	public void sendBatch (int index, List<String> l){
 		for (String s:l) send(index, s);
 	}
 	

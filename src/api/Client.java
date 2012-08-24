@@ -11,7 +11,7 @@ import api.rpc.exceptions.MaxBatchSizeException;
  * This interface is the blueprint for all the clients.
  */
 
-public interface Client extends Sink{
+public interface Client{
 	
 	/**
 	 * This method sends one log (with the String contained in 'log') using this Client.
