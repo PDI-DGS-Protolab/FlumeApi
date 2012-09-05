@@ -1,9 +1,9 @@
 FlumeApi
 ========
 
-A Flume API wrapper to make easier the integration of Flume 1.2 with custom applications
+A small, simple library to wrap features provided by the official Flume API in order to make easier the integration of Flume 1.2 (onwards) with custom applications
 
-## Code Sample
+### Code Sample
 
 ```java
   // Creating the logger
