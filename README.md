@@ -28,7 +28,7 @@ You can compare the differences between the features given with this library and
   String rand = "", msg = "";
   for (int i = 0; i < 10000; i++) {
         rand = String.valueOf(r.nextInt(1000));
-  msg = "Client " + this.id + rand + "\n";
+        msg = "Client " + this.id + rand + "\n";
 	l.sendAll(msg);
   }
 
