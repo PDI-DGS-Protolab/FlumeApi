@@ -32,14 +32,12 @@ You can compare the differences between the features given with this library and
 	l.sendAll(msg);
   }
 
-  // Removing the Console destiny by the index received previously
-  l.removeDestiny( consoleIndex );
-
-  // Removing every File Destiny
-  l.removeDestiny(ClientType.FILE);
-
-  // Sending events just by RPC (because the others were removed)
-  l.sendAll( msg );
+  // Optional part below (not written with the official API)
+  
+  l.send( consoleIndex, msg)           // Sending events only to the console
+  l.removeDestiny( consoleIndex );     // Removing the specified Console destiny
+  l.removeDestiny(ClientType.FILE);    // Removing every File destiny
+  l.sendAll( msg );                    // Using the remaining RPC destiny
 ```
 
 ### Code sample with the official Flume API
